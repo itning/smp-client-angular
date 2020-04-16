@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +20,5 @@ export class AppComponent implements OnInit {
       this.logoImageSrc = 'assets/logo-small.png';
     }
     this.isCollapsed = !this.isCollapsed;
-  }
-
-  onBtnClick(e) {
-    console.log(e);
   }
 }
