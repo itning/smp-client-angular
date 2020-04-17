@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {StudentService} from '../../service/student.service';
-import {RestModel} from '../../entity/RestModel';
-import {StudentUser} from '../../entity/StudentUser';
 import {NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
@@ -16,13 +14,9 @@ export class StudentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.studentService.getAllStudentByPage().subscribe((data: RestModel<StudentUser>) => {
+    this.studentService.getAllStudentByPage().subscribe((data) => {
       console.log('组件接收数据');
       console.log(data);
     });
-  }
-
-  showNot() {
-    this.notification.error('1', 'a');
   }
 }

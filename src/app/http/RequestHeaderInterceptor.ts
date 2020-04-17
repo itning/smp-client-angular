@@ -3,14 +3,17 @@ import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {TokenService} from '../service/token.service';
 
+/**
+ * <p>拦截器
+ * <p>加入请求头
+ */
 @Injectable()
-export class RequestInterceptor implements HttpInterceptor {
+export class RequestHeaderInterceptor implements HttpInterceptor {
 
   constructor(private token: TokenService) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(`request ${req.url}`);
     const token: string | null = this.token.getJwtTokenString();
     let headers: Headers = {Accept: 'application/json'};
     if (token !== null) {
