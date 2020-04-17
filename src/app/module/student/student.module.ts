@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {StudentComponent} from './student.component';
-import {NzButtonModule, NzIconModule, NzInputModule} from 'ng-zorro-antd';
 import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
@@ -8,10 +7,7 @@ import {SharedModule} from '../shared/shared.module';
     StudentComponent,
   ],
   imports: [
-    SharedModule,
-    NzInputModule,
-    NzButtonModule,
-    NzIconModule
+    SharedModule
   ]
 })
 export class StudentModule {

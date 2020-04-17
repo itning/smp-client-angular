@@ -1,6 +1,9 @@
-<nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-  <input type="text" nz-input placeholder="input search text"/>
-</nz-input-group>
-<ng-template #suffixIconButton>
-  <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
-</ng-template>
+<div class="search-box">
+  <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+    <input type="text" nz-input placeholder="键入学号或姓名进行模糊搜索"/>
+  </nz-input-group>
+  <ng-template #suffixIconButton>
+    <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+  </ng-template>
+</div>
+<button nz-button nzType="primary" (click)="showNot()">按钮</button>

@@ -9,15 +9,16 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NZ_I18N, zh_CN} from 'ng-zorro-antd/i18n';
 import {registerLocaleData} from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import {NzIconModule, NzLayoutModule, NzMenuModule} from 'ng-zorro-antd';
 import {SharedModule} from './module/shared/shared.module';
 import {StudentModule} from './module/student/student.module';
+import {httpInterceptorProviders} from './http';
+import {NzNotificationServiceModule} from 'ng-zorro-antd';
 
 registerLocaleData(zh);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     StudentModule,
@@ -27,11 +28,9 @@ registerLocaleData(zh);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NzLayoutModule,
-    NzMenuModule,
-    NzIconModule,
+    NzNotificationServiceModule
   ],
-  providers: [{provide: NZ_I18N, useValue: zh_CN}],
+  providers: [{provide: NZ_I18N, useValue: zh_CN}, httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {
