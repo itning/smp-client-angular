@@ -12,5 +12,5 @@ export class Page<DATA> {
   empty: boolean;
   pageable: Pageable;
   sort: Sort;
-  content: DATA;
+  content: DATA[];
 }
