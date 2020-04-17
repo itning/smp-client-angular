@@ -8,9 +8,9 @@
 </div>
 <nz-table
   nzShowSizeChanger
+  nzShowQuickJumper
   [nzData]="listOfStudentUser"
   [nzFrontPagination]="false"
-  [nzShowQuickJumper]="true"
   [nzLoading]="loading"
   [nzTotal]="total"
   [nzPageSize]="pageSize"
@@ -29,6 +29,7 @@
     <th nzColumnKey="roomNum">寝室</th>
     <th nzColumnKey="tel">电话</th>
     <th nzColumnKey="email">邮箱</th>
+    <th nzColumnKey="operation">操作</th>
   </tr>
   </thead>
   <tbody>
@@ -42,6 +43,7 @@
     <td>{{ data.roomNum }}</td>
     <td>{{ data.tel }}</td>
     <td>{{ data.email }}</td>
+    <td><a>查看详情</a></td>
   </tr>
   </tbody>
 </nz-table>
