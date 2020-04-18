@@ -17,4 +17,9 @@ export class StudentService {
   getAllStudentByPage(pagination: QueryPageSortParamBuilder): Observable<Page<StudentUser>> {
     return this.http.get<Page<StudentUser>>(`${API.users}${pagination.build()}`);
   }
+
+  searchAllStudentByPage(key: string, pagination: QueryPageSortParamBuilder): Observable<Page<StudentUser>> {
+    return this.http.get<Page<StudentUser>>(`${API.search.users}${key}${pagination.build()}`);
+  }
+
 }

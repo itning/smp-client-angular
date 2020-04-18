@@ -28,9 +28,14 @@ export class QueryPageSortParamBuilder {
       })
       [0];
     if (order) {
-      this.sortKey = order.key;
-      this.sortType = order.value;
+      this.sortSimple(order.key, order.value);
     }
+    return this;
+  }
+
+  sortSimple(key: string, type: string): QueryPageSortParamBuilder {
+    this.sortKey = key;
+    this.sortType = type;
     return this;
   }
 
