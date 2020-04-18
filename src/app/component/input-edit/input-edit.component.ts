@@ -37,7 +37,7 @@ export class InputEditComponent implements OnInit {
   }
 
   verificationInputValue(): boolean {
-    const value = this.value;
+    const value = this.value ? this.value : '';
     // 验证是否为空
     if (!this.nullable && value.trim() === '') {
       this.message.error('输入不能为空');

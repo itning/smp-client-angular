@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {StudentService} from '../../service/student.service';
 import {StudentUser} from '../../entity/StudentUser';
-import {NzTableQueryParams} from 'ng-zorro-antd';
+import {NzMessageService, NzTableQueryParams} from 'ng-zorro-antd';
 import {QueryPageSortParamBuilder} from '../../http/QueryPageSortParamBuilder';
 import {Page} from '../../entity/page/Page';
 
@@ -20,8 +20,10 @@ export class StudentComponent implements OnInit {
   searchKey = '';
   isShowDetailModal = false;
   nowShowDetailStudentUser: StudentUser = null;
+  queryPageSortParamBuilder = new QueryPageSortParamBuilder();
 
-  constructor(private studentService: StudentService) {
+  constructor(private studentService: StudentService,
+              private message: NzMessageService) {
   }
 
   ngOnInit(): void {
@@ -68,19 +70,45 @@ export class StudentComponent implements OnInit {
   }
 
   onQueryParamsChange(params: NzTableQueryParams) {
-    const queryPageSortParamBuilder = new QueryPageSortParamBuilder()
+    this.queryPageSortParamBuilder = new QueryPageSortParamBuilder()
       .page(params.pageIndex - 1)
       .size(params.pageSize)
       .sort(params.sort);
     if (this.needSearch()) {
-      this.getSearchData(this.searchKey.trim(), queryPageSortParamBuilder);
+      this.getSearchData(this.searchKey.trim(), this.queryPageSortParamBuilder);
     } else {
-      this.getData(queryPageSortParamBuilder);
+      this.getData(this.queryPageSortParamBuilder);
     }
   }
 
   showDetail(data: StudentUser) {
     this.nowShowDetailStudentUser = data;
     this.isShowDetailModal = true;
+  }
+
+  onModalCancel() {
+    if (this.needSearch()) {
+      this.getSearchData(this.searchKey.trim(), this.queryPageSortParamBuilder);
+    } else {
+      this.getData(this.queryPageSortParamBuilder);
+    }
+    this.isShowDetailModal = false;
+  }
+
+  confirmDelStudent() {
+    if (this.nowShowDetailStudentUser) {
+      this.studentService.delStudent(this.nowShowDetailStudentUser.id).subscribe(() => {
+        this.message.success('删除成功');
+        this.onModalCancel();
+      });
+    }
+  }
+
+  confirmResetStudentPassword() {
+    if (this.nowShowDetailStudentUser) {
+      this.studentService.resetStudentPassword(this.nowShowDetailStudentUser.studentId).subscribe(() => {
+        this.message.success('重置成功');
+      });
+    }
   }
 }

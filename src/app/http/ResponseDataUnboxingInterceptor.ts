@@ -13,7 +13,7 @@ export class ResponseDataUnboxingInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       map((event: HttpEvent<any>) => {
-        if (event instanceof HttpResponse) {
+        if (event instanceof HttpResponse && event.status !== 204) {
           // 获取响应
           const httpResponse: HttpResponse<RestModel<any>> = (event as HttpResponse<RestModel<any>>);
           // 获取RestModel中data

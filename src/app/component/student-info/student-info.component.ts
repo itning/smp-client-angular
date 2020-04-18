@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {StudentUser} from '../../entity/StudentUser';
 import {ApartmentService} from '../../service/apartment.service';
 import {Apartment} from '../../entity/Apartment';
+import {StudentService} from '../../service/student.service';
+import {NzMessageService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-student-info',
@@ -24,7 +26,9 @@ export class StudentInfoComponent implements OnInit {
   apartmentData: Apartment[] = [];
   apartmentDataWithKeyValue: { key: string, value: string }[] = [];
 
-  constructor(private apartmentService: ApartmentService) {
+  constructor(private apartmentService: ApartmentService,
+              private studentService: StudentService,
+              private message: NzMessageService) {
   }
 
   ngOnInit(): void {
@@ -36,6 +40,14 @@ export class StudentInfoComponent implements OnInit {
   }
 
   onValueChange(data: { key: string; value: string }) {
-    console.log(data);
+    const updateInfo = {id: this.data.id};
+    if (data.key === 'apartment') {
+      updateInfo[data.key] = {id: data.value};
+    } else {
+      updateInfo[data.key] = data.value;
+    }
+    this.studentService.updateStudentInfo(updateInfo).subscribe(() => {
+      this.message.success('更新成功');
+    });
   }
 }

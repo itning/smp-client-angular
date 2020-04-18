@@ -50,16 +50,18 @@
 </nz-table>
 <nz-modal [(nzVisible)]="isShowDetailModal"
           [nzFooter]="modalFooter"
-          (nzOnCancel)="isShowDetailModal=false"
+          (nzOnCancel)="onModalCancel()"
           nzMaskClosable="false"
           nzTitle="查看详情">
   <ng-template #modalFooter>
     <button nz-popconfirm
             nzPopconfirmTitle="确定删除该学生？"
+            (nzOnConfirm)="confirmDelStudent()"
             nz-button nzType="danger">删除该学生
     </button>
     <button nz-popconfirm
             nzPopconfirmTitle="确定重置该学生密码？"
+            (nzOnConfirm)="confirmResetStudentPassword()"
             nz-button nzType="danger">重置该学生密码
     </button>
   </ng-template>
