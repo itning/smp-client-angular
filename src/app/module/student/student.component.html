@@ -1,5 +1,6 @@
 <div class="search-box">
   <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+    <!--suppress HtmlFormInputWithoutLabel -->
     <input type="text" nz-input placeholder="键入学号或姓名进行模糊搜索" [(ngModel)]="searchKey" (keyup.enter)="onSearch()"/>
   </nz-input-group>
   <ng-template #suffixIconButton>
@@ -43,7 +44,24 @@
     <td>{{ data.roomNum }}</td>
     <td>{{ data.tel }}</td>
     <td>{{ data.email }}</td>
-    <td><a>查看详情</a></td>
+    <td><a (click)="showDetail(data)">查看详情</a></td>
   </tr>
   </tbody>
 </nz-table>
+<nz-modal [(nzVisible)]="isShowDetailModal"
+          [nzFooter]="modalFooter"
+          (nzOnCancel)="isShowDetailModal=false"
+          nzMaskClosable="false"
+          nzTitle="查看详情">
+  <ng-template #modalFooter>
+    <button nz-popconfirm
+            nzPopconfirmTitle="确定删除该学生？"
+            nz-button nzType="danger">删除该学生
+    </button>
+    <button nz-popconfirm
+            nzPopconfirmTitle="确定重置该学生密码？"
+            nz-button nzType="danger">重置该学生密码
+    </button>
+  </ng-template>
+  <app-student-info *ngIf="isShowDetailModal" [data]="nowShowDetailStudentUser"></app-student-info>
+</nz-modal>

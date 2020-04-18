@@ -1,0 +1,17 @@
+<nz-input-group *ngIf="inputRangeObject.length===0" class="input-group-item" [nzAddOnBefore]="name"
+                [nzAddOnAfter]="groupAfter">
+  <input nz-input [(ngModel)]="value" [disabled]="isInputDisabled" [nzAutocomplete]="auto"/>
+  <nz-autocomplete [nzDataSource]="inputRange" nzBackfill #auto></nz-autocomplete>
+</nz-input-group>
+<ng-template #groupAfter>
+  <i *ngIf="isInputDisabled" class="i-group-after" nz-icon nzType="edit" nzTheme="outline"
+     (click)="this.isInputDisabled = false"></i>
+  <i *ngIf="!isInputDisabled" class="i-group-after" nz-icon nzType="check" nzTheme="outline"
+     (click)="onSave()"></i>
+</ng-template>
+<nz-input-group *ngIf="inputRangeObject.length!==0" class="input-group-item" [nzAddOnBefore]="name"
+                [nzAddOnAfter]="groupAfter">
+  <nz-select nzShowSearch nzAllowClear [nzDisabled]="isInputDisabled" [(ngModel)]="value">
+    <nz-option *ngFor="let o of inputRangeObject" [nzLabel]="o.value" [nzValue]="o.key"></nz-option>
+  </nz-select>
+</nz-input-group>

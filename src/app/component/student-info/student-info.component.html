@@ -1,0 +1,18 @@
+<app-input-edit key="name" name="姓名" [value]="data?.name" (valueChange)="onValueChange($event)"></app-input-edit>
+<app-input-edit key="studentId" name="学号" mustInteger="true" [value]="data?.studentId"
+                (valueChange)="onValueChange($event)"></app-input-edit>
+<app-input-edit key="tel" name="电话" mustInteger="true" [regular]="telReg" regularErrorMessage="请输入正确的电话号"
+                [value]="data?.tel"
+                (valueChange)="onValueChange($event)"></app-input-edit>
+<app-input-edit key="email" name="邮箱" [regular]="emailReg" [value]="data?.email" regularErrorMessage="请输入正确的邮箱"
+                (valueChange)="onValueChange($event)"></app-input-edit>
+<app-input-edit key="ethnic" name="民族" [value]="data?.ethnic" [inputRange]="ethnicRangeData"
+                (valueChange)="onValueChange($event)"></app-input-edit>
+<app-input-edit key="bedNum" name="床号" [value]="data?.bedNum" (valueChange)="onValueChange($event)"></app-input-edit>
+<app-input-edit key="roomNum" name="寝室号" [value]="data?.roomNum" (valueChange)="onValueChange($event)"></app-input-edit>
+<app-input-edit key="apartment" name="公寓" [value]="data?.apartment.id" [inputRangeObject]="apartmentDataWithKeyValue"
+                (valueChange)="onValueChange($event)"></app-input-edit>
+<app-input-edit key="idCard" name="身份证号" [value]="data?.idCard" (valueChange)="onValueChange($event)"></app-input-edit>
+<app-input-edit key="politicalStatus" name="政治面貌" [value]="data?.politicalStatus" [inputRange]="politicalRangeData"
+                (valueChange)="onValueChange($event)"></app-input-edit>
+<app-input-edit key="address" name="家庭地址" [value]="data?.address" (valueChange)="onValueChange($event)"></app-input-edit>

@@ -18,6 +18,8 @@ export class StudentComponent implements OnInit {
   pageSize = 10;
   pageIndex = 1;
   searchKey = '';
+  isShowDetailModal = false;
+  nowShowDetailStudentUser: StudentUser = null;
 
   constructor(private studentService: StudentService) {
   }
@@ -75,5 +77,10 @@ export class StudentComponent implements OnInit {
     } else {
       this.getData(queryPageSortParamBuilder);
     }
+  }
+
+  showDetail(data: StudentUser) {
+    this.nowShowDetailStudentUser = data;
+    this.isShowDetailModal = true;
   }
 }

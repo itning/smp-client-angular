@@ -12,7 +12,7 @@ import zh from '@angular/common/locales/zh';
 import {SharedModule} from './module/shared/shared.module';
 import {StudentModule} from './module/student/student.module';
 import {httpInterceptorProviders} from './http';
-import {NzNotificationServiceModule} from 'ng-zorro-antd';
+import {NzMessageModule, NzNotificationServiceModule} from 'ng-zorro-antd';
 
 registerLocaleData(zh);
 
@@ -28,7 +28,8 @@ registerLocaleData(zh);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NzNotificationServiceModule
+    NzNotificationServiceModule,
+    NzMessageModule
   ],
   providers: [{provide: NZ_I18N, useValue: zh_CN}, httpInterceptorProviders],
   bootstrap: [AppComponent]
