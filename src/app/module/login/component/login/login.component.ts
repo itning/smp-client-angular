@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SecurityService} from '../../../../service/security.service';
 import {Router} from '@angular/router';
+import videojs from 'video.js';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,14 @@ export class LoginComponent implements OnInit {
     this.validateForm = this.fb.group({
       username: [null, [Validators.required]],
       password: [null, [Validators.required]]
+    });
+
+    videojs('video-id', {
+      controls: false,
+      autoplay: true,
+      preload: 'auto'
+    }).ready(function() {
+      this.play();
     });
   }
 
