@@ -17,7 +17,7 @@ export class SecurityService {
     const param = new HttpParams()
       .set('username', username)
       .set('password', password);
-    this.http.post<string>(API.login, param)
+    return this.http.post<string>(API.login, param)
       .pipe(
         tap((token) => this.tokenService.setJwtTokenString(token))
       );

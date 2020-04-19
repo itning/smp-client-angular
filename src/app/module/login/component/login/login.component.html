@@ -1,1 +1,21 @@
-<p>login works!</p>
+<div class="login-box">
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-control nzErrorTip="请输入用户名!">
+        <nz-input-group nzPrefixIcon="user">
+          <!--suppress HtmlFormInputWithoutLabel -->
+          <input type="text" nz-input formControlName="username" placeholder="用户名"/>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="请输入密码!">
+        <nz-input-group nzPrefixIcon="lock">
+          <!--suppress HtmlFormInputWithoutLabel -->
+          <input type="password" nz-input formControlName="password" placeholder="密码"/>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <button nz-button [nzType]="'primary'" [nzLoading]="isLoading">登录</button>
+  </form>
+</div>

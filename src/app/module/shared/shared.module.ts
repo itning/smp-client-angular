@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {
   NzAutocompleteModule,
   NzButtonModule,
+  NzFormModule,
   NzIconModule,
   NzInputModule,
   NzLayoutModule,
@@ -13,7 +14,7 @@ import {
   NzTableModule
 } from 'ng-zorro-antd';
 import {SexPipe} from '../../pipe/sex.pipe';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {StudentInfoComponent} from '../../component/student-info/student-info.component';
 import {InputEditComponent} from '../../component/input-edit/input-edit.component';
 
@@ -21,6 +22,7 @@ import {InputEditComponent} from '../../component/input-edit/input-edit.componen
   declarations: [SexPipe, StudentInfoComponent, InputEditComponent],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     NzInputModule,
     NzButtonModule,
@@ -31,13 +33,15 @@ import {InputEditComponent} from '../../component/input-edit/input-edit.componen
     NzModalModule,
     NzPopconfirmModule,
     NzAutocompleteModule,
-    NzSelectModule
+    NzSelectModule,
+    NzFormModule
   ],
   exports: [
     SexPipe,
     StudentInfoComponent,
     InputEditComponent,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     NzInputModule,
     NzButtonModule,
@@ -48,7 +52,8 @@ import {InputEditComponent} from '../../component/input-edit/input-edit.componen
     NzModalModule,
     NzPopconfirmModule,
     NzAutocompleteModule,
-    NzSelectModule
+    NzSelectModule,
+    NzFormModule
   ]
 })
 export class SharedModule {
