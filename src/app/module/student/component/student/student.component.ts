@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {StudentService} from '../../service/student.service';
-import {StudentUser} from '../../entity/StudentUser';
+import {StudentService} from '../../../../service/student.service';
+import {StudentUser} from '../../../../entity/StudentUser';
 import {NzMessageService, NzTableQueryParams} from 'ng-zorro-antd';
-import {QueryPageSortParamBuilder} from '../../http/QueryPageSortParamBuilder';
-import {Page} from '../../entity/page/Page';
+import {QueryPageSortParamBuilder} from '../../../../http/QueryPageSortParamBuilder';
+import {Page} from '../../../../entity/page/Page';
 
 @Component({
   selector: 'app-student',

@@ -6,19 +6,6 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  isCollapsed = false;
-  logoImageSrc = 'assets/logo.png';
-
   ngOnInit(): void {
-
-  }
-
-  onCollapsedChange() {
-    if (this.isCollapsed) {
-      this.logoImageSrc = 'assets/logo.png';
-    } else {
-      this.logoImageSrc = 'assets/logo-small.png';
-    }
-    this.isCollapsed = !this.isCollapsed;
   }
 }

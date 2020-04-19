@@ -13,6 +13,8 @@ import {SharedModule} from './module/shared/shared.module';
 import {StudentModule} from './module/student/student.module';
 import {httpInterceptorProviders} from './http';
 import {NzMessageModule, NzNotificationServiceModule} from 'ng-zorro-antd';
+import {LoginModule} from './module/login/login.module';
+import {IndexModule} from './module/index/index.module';
 
 registerLocaleData(zh);
 
@@ -21,6 +23,8 @@ registerLocaleData(zh);
     AppComponent
   ],
   imports: [
+    IndexModule,
+    LoginModule,
     StudentModule,
     SharedModule,
     BrowserModule,

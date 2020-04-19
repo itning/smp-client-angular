@@ -1,0 +1,41 @@
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #1890ff;
+  }
+}
+
+.logo-box {
+  padding: 0 10px;
+  line-height: 64px;
+  height: 64px;
+  overflow: hidden;
+}
+
+.logo {
+  width: 180px;
+}
+
+.logo-small {
+  position: relative;
+  width: 36px;
+  left: 12px;
+}
+
+nz-header {
+  background: #fff;
+  padding: 0;
+}
+
+nz-breadcrumb {
+  margin: 16px 0;
+}
+
+nz-footer {
+  text-align: center;
+}

@@ -1,0 +1,45 @@
+<nz-layout style="height: 100%">
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <div class="logo-box">
+      <img [src]="logoImageSrc" alt="logo" [ngClass]="isCollapsed?'logo-small':'logo'">
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-menu-item>
+        <i nz-icon nzType="pie-chart"></i>
+        <span>首页</span>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="profile"></i>
+        <span>学生管理</span>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="plus"></i>
+        <span>新增学生</span>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="align-left"></i>
+        <span>公寓管理</span>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="search"></i>
+        <span>请假查询</span>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="tags"></i>
+        <span>请假审批</span>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="home"></i>
+        <span>归寝管理</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="onCollapsedChange()"></i>
+    </nz-header>
+    <nz-content>
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
