@@ -1,1 +1,52 @@
-<p>new-student works!</p>
+<div class="update-file-box">
+  <nz-upload *ngIf="stepCurrent===0" class="upload-file"
+             nzType="drag"
+             nzAccept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+             nzName="file"
+             [nzAction]="uploadPath"
+             [nzCustomRequest]=""
+             [nzBeforeUpload]="beforeUpload"
+             (nzChange)="handleChange($event)"
+  >
+    <p class="ant-upload-drag-icon">
+      <i nz-icon nzType="inbox"></i>
+    </p>
+    <p class="ant-upload-text">单击或拖动文件到该区域以上传</p>
+    <p class="ant-upload-hint">
+      支持单次上传。请选择Excel文件（.xls/.xlsx）
+    </p>
+  </nz-upload>
+  <div *ngIf="stepCurrent===1">
+    <nz-result
+      nzTitle="新增失败"
+      nzStatus="error"
+      nzSubTitle="请检查文件，以下是服务器返回的信息"
+    >
+      <div nz-result-content>
+        <div class="desc">
+          <h4 nz-title>Excel文件数据错误：</h4>
+          <p nz-paragraph *ngFor="let info of resultError">
+            <i nz-icon nzType="close-circle"></i>
+            {{info}}
+          </p>
+        </div>
+      </div>
+      <div nz-result-extra>
+        <button nz-button routerLink="/student">学生管理</button>
+        <button nz-button nzType="primary" (click)="stepCurrent=0">重新上传</button>
+      </div>
+    </nz-result>
+  </div>
+  <div *ngIf="stepCurrent===2">
+    <nz-result
+      nzStatus="success"
+      nzTitle="学生信息成功上传并录入"
+      [nzSubTitle]="resultInfo"
+    >
+      <div nz-result-extra>
+        <button nz-button nzType="primary" routerLink="/student">学生管理</button>
+        <button nz-button (click)="stepCurrent=0">继续上传</button>
+      </div>
+    </nz-result>
+  </div>
+</div>

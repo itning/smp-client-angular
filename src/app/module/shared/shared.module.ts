@@ -10,8 +10,11 @@ import {
   NzMenuModule,
   NzModalModule,
   NzPopconfirmModule,
+  NzResultModule,
   NzSelectModule,
-  NzTableModule
+  NzTableModule,
+  NzTypographyModule,
+  NzUploadModule
 } from 'ng-zorro-antd';
 import {SexPipe} from '../../pipe/sex.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -34,7 +37,10 @@ import {InputEditComponent} from '../../component/input-edit/input-edit.componen
     NzPopconfirmModule,
     NzAutocompleteModule,
     NzSelectModule,
-    NzFormModule
+    NzFormModule,
+    NzUploadModule,
+    NzResultModule,
+    NzTypographyModule
   ],
   exports: [
     SexPipe,
@@ -53,7 +59,10 @@ import {InputEditComponent} from '../../component/input-edit/input-edit.componen
     NzPopconfirmModule,
     NzAutocompleteModule,
     NzSelectModule,
-    NzFormModule
+    NzFormModule,
+    NzUploadModule,
+    NzResultModule,
+    NzTypographyModule
   ]
 })
 export class SharedModule {
