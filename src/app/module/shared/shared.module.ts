@@ -3,11 +3,13 @@ import {CommonModule} from '@angular/common';
 import {
   NzAutocompleteModule,
   NzButtonModule,
+  NzCommentModule,
   NzDatePickerModule,
   NzFormModule,
   NzIconModule,
   NzInputModule,
   NzLayoutModule,
+  NzListModule,
   NzMenuModule,
   NzModalModule,
   NzPopconfirmModule,
@@ -22,9 +24,11 @@ import {SexPipe} from '../../pipe/sex.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {StudentInfoComponent} from '../../component/student-info/student-info.component';
 import {InputEditComponent} from '../../component/input-edit/input-edit.component';
+import {CommentComponent} from '../../component/comment/comment.component';
+import {LeaveTypePipe} from '../../pipe/leave-type.pipe';
 
 @NgModule({
-  declarations: [SexPipe, StudentInfoComponent, InputEditComponent],
+  declarations: [SexPipe, LeaveTypePipe, StudentInfoComponent, InputEditComponent, CommentComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -44,10 +48,14 @@ import {InputEditComponent} from '../../component/input-edit/input-edit.componen
     NzResultModule,
     NzTypographyModule,
     NzSwitchModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    NzCommentModule,
+    NzListModule
   ],
   exports: [
+    CommentComponent,
     SexPipe,
+    LeaveTypePipe,
     StudentInfoComponent,
     InputEditComponent,
     FormsModule,
@@ -68,7 +76,9 @@ import {InputEditComponent} from '../../component/input-edit/input-edit.componen
     NzResultModule,
     NzTypographyModule,
     NzSwitchModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    NzCommentModule,
+    NzListModule
   ]
 })
 export class SharedModule {

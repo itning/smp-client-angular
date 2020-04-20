@@ -1,0 +1,25 @@
+<nz-list>
+  <nz-list-item *ngFor="let item of leaveReasons">
+    <nz-comment [nzAuthor]="item.fromUser.name" [nzDatetime]="time">
+      <nz-comment-content>{{item.comment}}</nz-comment-content>
+      <nz-comment-action *ngIf="canReply">
+        <a (click)="wantReply()">回复</a>
+      </nz-comment-action>
+    </nz-comment>
+    <ng-template #time>
+      {{item.gmtCreate | date:'yyyy年MM月dd日 HH:mm:ss'}}
+    </ng-template>
+  </nz-list-item>
+  <nz-list-empty *ngIf="leaveReasons.length === 0"></nz-list-empty>
+</nz-list>
+<nz-comment *ngIf="canReply&&(showCommentInput||leaveReasons.length===0)">
+  <nz-comment-content>
+    <nz-form-item>
+      <!--suppress HtmlFormInputWithoutLabel -->
+      <textarea nz-input rows="5"></textarea>
+    </nz-form-item>
+    <nz-form-item>
+      <button nz-button nzType="primary">评论</button>
+    </nz-form-item>
+  </nz-comment-content>
+</nz-comment>

@@ -1,3 +1,5 @@
+import {User} from './User';
+
 export class LeaveReason {
   /**
    * ID
@@ -7,6 +9,10 @@ export class LeaveReason {
    * 评论
    */
   comment: string;
+  /**
+   * 评论用户ID
+   */
+  fromUser: User;
   /**
    * 创建时间
    */
