@@ -15,6 +15,12 @@ import {httpInterceptorProviders} from './http';
 import {NzMessageModule, NzNotificationServiceModule} from 'ng-zorro-antd';
 import {LoginModule} from './module/login/login.module';
 import {IndexModule} from './module/index/index.module';
+import {NewStudentModule} from './module/new-student/new-student.module';
+import {ApartmentModule} from './module/apartment/apartment.module';
+import {LeaveModule} from './module/leave/leave.module';
+import {LeaveCheckModule} from './module/leave-check/leave-check.module';
+import {RoomModule} from './module/room/room.module';
+import {StatisticsModule} from './module/statistics/statistics.module';
 
 registerLocaleData(zh);
 
@@ -23,6 +29,12 @@ registerLocaleData(zh);
     AppComponent
   ],
   imports: [
+    StatisticsModule,
+    RoomModule,
+    LeaveCheckModule,
+    LeaveModule,
+    ApartmentModule,
+    NewStudentModule,
     IndexModule,
     LoginModule,
     StudentModule,
