@@ -16,4 +16,8 @@ export class TokenService {
   setJwtTokenString(token: string): void {
     window.localStorage.setItem(this.LOCAL_STORAGE_KEY, token);
   }
+
+  clearJwtTokenString(): void {
+    window.localStorage.removeItem(this.LOCAL_STORAGE_KEY);
+  }
 }
