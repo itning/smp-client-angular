@@ -1,1 +1,24 @@
-<p>leave works!</p>
+<div class="search-box">
+  <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <input type="text" nz-input placeholder="键入学号或姓名进行模糊搜索" [(ngModel)]="searchKey" (keyup.enter)="onSearch()"/>
+  </nz-input-group>
+  <ng-template #suffixIconButton>
+    <button nz-button nzType="primary" nzSearch (click)="onSearch()"><i nz-icon nzType="search"></i></button>
+  </ng-template>
+  <div class="search-condition">
+    <nz-switch class="search-condition-item" [(ngModel)]="isAllowCondition"></nz-switch>
+    <nz-select class="search-condition-item" ngModel="lucy" [nzDisabled]="!isAllowCondition">
+      <nz-option nzValue="jack" nzLabel="所有类型"></nz-option>
+      <nz-option nzValue="lucy" nzLabel="课假+寝室假"></nz-option>
+      <nz-option nzValue="a" nzLabel="课假"></nz-option>
+      <nz-option nzValue="b" nzLabel="寝室假"></nz-option>
+    </nz-select>
+    <nz-select class="search-condition-item" ngModel="lucy" [nzDisabled]="!isAllowCondition">
+      <nz-option nzValue="jack" nzLabel="全部范围"></nz-option>
+      <nz-option nzValue="lucy" nzLabel="假期中"></nz-option>
+      <nz-option nzValue="a" nzLabel="已过期"></nz-option>
+    </nz-select>
+    <nz-range-picker [nzDisabled]="!isAllowCondition" [nzPlaceHolder]="['假条开始日期起始','假条开始日期结束']" nzSeparator="-"></nz-range-picker>
+  </div>
+</div>

@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {
   NzAutocompleteModule,
   NzButtonModule,
+  NzDatePickerModule,
   NzFormModule,
   NzIconModule,
   NzInputModule,
@@ -12,6 +13,7 @@ import {
   NzPopconfirmModule,
   NzResultModule,
   NzSelectModule,
+  NzSwitchModule,
   NzTableModule,
   NzTypographyModule,
   NzUploadModule
@@ -40,7 +42,9 @@ import {InputEditComponent} from '../../component/input-edit/input-edit.componen
     NzFormModule,
     NzUploadModule,
     NzResultModule,
-    NzTypographyModule
+    NzTypographyModule,
+    NzSwitchModule,
+    NzDatePickerModule
   ],
   exports: [
     SexPipe,
@@ -62,7 +66,9 @@ import {InputEditComponent} from '../../component/input-edit/input-edit.componen
     NzFormModule,
     NzUploadModule,
     NzResultModule,
-    NzTypographyModule
+    NzTypographyModule,
+    NzSwitchModule,
+    NzDatePickerModule
   ]
 })
 export class SharedModule {
