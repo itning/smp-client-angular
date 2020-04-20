@@ -1,1 +1,31 @@
-<p>apartment works!</p>
+<div class="apartment-box">
+  <nz-table #editRowTable nzBordered [nzData]="listOfData" [nzShowPagination]="false" [nzLoading]="isLoading">
+    <thead>
+    <tr>
+      <th nzWidth="80%">公寓名称</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of editRowTable.data" class="editable-row">
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id" (click)="startEdit(data)">
+          {{ data.name }}
+        </div>
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.name" (blur)="stopEdit(data)"/>
+      </td>
+      <td>
+        <a nz-popconfirm nzPopconfirmTitle="确定删除该公寓？" (nzOnConfirm)="deleteApartment(data.id)">删除</a>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+  <button nz-button nzBlock style="margin: 12px 0" (click)="addApartment()" nzType="default">新增</button>
+</div>
+<nz-modal nzTitle="新增公寓"
+          [(nzVisible)]="isAddModalVisible"
+          (nzOnCancel)="isAddModalVisible=false"
+          (nzOnOk)="handleOk()"
+          [nzOkLoading]="isOkLoading">
+  <input nz-input placeholder="公寓名称" [(ngModel)]="newApartmentName"/>
+</nz-modal>
