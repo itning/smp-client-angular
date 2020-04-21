@@ -13,10 +13,14 @@ import {
   NzMenuModule,
   NzModalModule,
   NzPopconfirmModule,
+  NzPopoverModule,
   NzResultModule,
   NzSelectModule,
+  NzStatisticModule,
   NzSwitchModule,
   NzTableModule,
+  NzTimePickerModule,
+  NzToolTipModule,
   NzTypographyModule,
   NzUploadModule
 } from 'ng-zorro-antd';
@@ -50,7 +54,11 @@ import {LeaveTypePipe} from '../../pipe/leave-type.pipe';
     NzSwitchModule,
     NzDatePickerModule,
     NzCommentModule,
-    NzListModule
+    NzListModule,
+    NzStatisticModule,
+    NzPopoverModule,
+    NzToolTipModule,
+    NzTimePickerModule
   ],
   exports: [
     CommentComponent,
@@ -78,7 +86,11 @@ import {LeaveTypePipe} from '../../pipe/leave-type.pipe';
     NzSwitchModule,
     NzDatePickerModule,
     NzCommentModule,
-    NzListModule
+    NzListModule,
+    NzStatisticModule,
+    NzPopoverModule,
+    NzToolTipModule,
+    NzTimePickerModule
   ]
 })
 export class SharedModule {

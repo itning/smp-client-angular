@@ -1,1 +1,41 @@
-<p>room works!</p>
+<div class="control-box">
+  <div nz-row nzJustify="space-around" nzAlign="middle">
+    <div nz-col nzSpan="8" style="cursor: pointer"
+         (click)="isChangeCheckTimeModalVisible=true">
+      <nz-statistic [nzValue]="checkTime | date:'HH:mm'"
+                    nzTitle="每天打卡时间"></nz-statistic>
+    </div>
+    <div nz-col nzSpan="8">
+      <nz-countdown [nzValue]="checkTimeMilliseconds" nzTitle="距离打卡时间还有"></nz-countdown>
+    </div>
+    <div nz-col nzSpan="8">
+      <nz-statistic nz-popover
+                    nzPopoverTitle="数值统计"
+                    [nzPopoverContent]="popoverContent"
+                    [nzValue]="studentRoomChecks.length"
+                    nzTitle="打卡人数"
+                    [nzSuffix]="'/'+totalStudentNum"
+      ></nz-statistic>
+    </div>
+  </div>
+  <ng-template #popoverContent>
+    <p>学生总数：{{countStudent}}</p>
+    <p>请假人数：{{countInEffectLeaves}}</p>
+  </ng-template>
+  <div class="control-btn">
+    <button nz-button nzType="default">查看打卡同学</button>
+    <button nz-button nzType="default" (click)="exportCheckData()">导出</button>
+    <button nz-button nzType="default" (click)="polyEditor?.open()">开始编辑</button>
+    <button nz-button nzType="default" (click)="polyEditor?.close()">结束编辑</button>
+    <button nz-button nzType="default" (click)="setFitView(false)">缩放以适合标记</button>
+    <button nz-button nzType="default" (click)="setFitView(true)">缩放以适合范围</button>
+    <nz-date-picker nz-tooltip nzTooltipTitle="更改查询日期" [ngModel]="nowDate"
+                    (ngModelChange)="handleDateChange($event)"></nz-date-picker>
+  </div>
+</div>
+<div id="map-container"></div>
+<nz-modal [(nzVisible)]="isChangeCheckTimeModalVisible" nzTitle="更改寝室打卡时间"
+          (nzOnCancel)="isChangeCheckTimeModalVisible=false"
+          (nzOnOk)="handleChangeCheckTime()">
+  <nz-time-picker [(ngModel)]="checkTimeUpdate" nzFormat="HH:mm"></nz-time-picker>
+</nz-modal>

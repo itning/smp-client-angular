@@ -15,6 +15,7 @@ export class ResponseDataUnboxingInterceptor implements HttpInterceptor {
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse && event.status !== 204) {
           // 获取响应
+          // noinspection TypeScriptValidateTypes
           const httpResponse: HttpResponse<RestModel<any>> = (event as HttpResponse<RestModel<any>>);
           // 获取RestModel中data
           const data: any = httpResponse.body.data;
