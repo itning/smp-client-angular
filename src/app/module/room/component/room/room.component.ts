@@ -28,7 +28,7 @@ export class RoomComponent implements OnInit {
   nowDate = new Date();
   nowMarkers: AMap.Marker[] = [];
   isChangeCheckTimeModalVisible = false;
-  checkTimeUpdate: Date;
+  checkTimeUpdate: Date | null = null;
   whereDay: string;
 
   constructor(private roomService: RoomService,
