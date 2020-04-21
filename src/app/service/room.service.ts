@@ -8,6 +8,7 @@ import {StudentRoomCheck} from '../entity/StudentRoomCheck';
   providedIn: 'root'
 })
 export class RoomService {
+  private array: StudentRoomCheck[];
 
   constructor(private http: HttpClient) {
   }
@@ -50,5 +51,13 @@ export class RoomService {
       a.click();
       (window as any).URL.revokeObjectURL(url);
     });
+  }
+
+  setStudentRoomCheckArray(array: StudentRoomCheck[]): void {
+    this.array = array;
+  }
+
+  getStudentRoomCheckArray(): StudentRoomCheck[] {
+    return this.array;
   }
 }

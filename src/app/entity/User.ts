@@ -27,7 +27,7 @@ export class User {
    */
   role: Role;
   /**
-   * 创建时间
+   * 学生
    */
   studentUser: StudentUser;
   /**

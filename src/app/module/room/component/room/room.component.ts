@@ -6,6 +6,7 @@ import {DatePipe} from '@angular/common';
 import {StudentRoomCheck} from '../../../../entity/StudentRoomCheck';
 import {API} from '../../../../api';
 import {NzMessageService} from 'ng-zorro-antd';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-room',
@@ -31,7 +32,8 @@ export class RoomComponent implements OnInit {
   whereDay: string;
 
   constructor(private roomService: RoomService,
-              private message: NzMessageService) {
+              private message: NzMessageService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -183,5 +185,10 @@ export class RoomComponent implements OnInit {
 
   exportCheckData() {
     this.roomService.exportCheckData(this.whereDay);
+  }
+
+  viewPic() {
+    this.roomService.setStudentRoomCheckArray(this.studentRoomChecks);
+    this.router.navigate(['/room_pic_view']).catch((error) => console.error(error));
   }
 }

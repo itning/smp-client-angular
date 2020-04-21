@@ -8,6 +8,7 @@ import {LeaveComponent} from '../leave/component/leave/leave.component';
 import {LeaveCheckComponent} from '../leave-check/component/leave-check/leave-check.component';
 import {RoomComponent} from '../room/component/room/room.component';
 import {StatisticsComponent} from '../statistics/component/statistics/statistics.component';
+import {RoomPicWaterFallComponent} from '../../component/room-pic-water-fall/room-pic-water-fall.component';
 
 
 const routes: Routes = [
@@ -22,7 +23,8 @@ const routes: Routes = [
       {path: 'leave', component: LeaveComponent},
       {path: 'leave_check', component: LeaveCheckComponent},
       {path: 'room', component: RoomComponent},
-      {path: 'statistics', component: StatisticsComponent}
+      {path: 'statistics', component: StatisticsComponent},
+      {path: 'room_pic_view', component: RoomPicWaterFallComponent}
     ]
   }
 ];

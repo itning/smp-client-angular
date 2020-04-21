@@ -23,7 +23,7 @@
     <p>请假人数：{{countInEffectLeaves}}</p>
   </ng-template>
   <div class="control-btn">
-    <button nz-button nzType="default">查看打卡同学</button>
+    <button nz-button nzType="default" (click)="viewPic()">查看打卡同学</button>
     <button nz-button nzType="default" (click)="exportCheckData()">导出</button>
     <button nz-button nzType="default" (click)="polyEditor?.open()">开始编辑</button>
     <button nz-button nzType="default" (click)="polyEditor?.close()">结束编辑</button>

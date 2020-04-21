@@ -1,0 +1,24 @@
+<nz-empty *ngIf="!studentRoomChecks||studentRoomChecks.length===0" style="margin-top: 16px"></nz-empty>
+<div *ngIf="studentRoomChecks&&studentRoomChecks.length!==0" class="pic-box">
+  <div *ngFor="let item of studentRoomChecks" class="pic-items" (click)="itemClick(item)">
+    <div class="img">
+      <img [src]="item.id | roomCheckPicSrc:item.filenameExtension" [alt]="item.id">
+    </div>
+    <div class="info">
+      <p
+        nz-typography>{{item.user.name}} {{item.user.studentUser.studentId}} {{item.checkFaceSimilarity | percent:'1.2-2'}}</p>
+      <p nz-typography>{{item.user.studentUser.apartment.name}} {{item.checkTime | date:'yyyy年MM月dd日 HH:mm:ss'}}</p>
+    </div>
+  </div>
+  <i></i><i></i><i></i><i></i><i></i>
+</div>
+<ng-template #notification let-a="data">
+  <div>
+    <div>姓名：{{a.user.name}}</div>
+    <div>学号：{{a.user.studentUser.studentId}}</div>
+    <div>公寓：{{a.user.studentUser.apartment.name}}</div>
+    <div>打卡时间：{{a.checkTime | date:'yyyy年MM月dd日 HH:mm:ss'}}</div>
+    <div>相似度：{{a.checkFaceSimilarity}}</div>
+    <img [src]="a.user.id | roomCheckPicSrc:'':true" alt="">
+  </div>
+</ng-template>

@@ -1,0 +1,29 @@
+.pic-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 12px;
+
+  i {
+    width: 230px;
+  }
+
+  .pic-items {
+    background-color: white;
+    padding: 6px 6px 0 6px;
+    margin: 6px 0;
+
+    .img {
+      text-align: center;
+    }
+
+    .info {
+      margin: 6px 0 0 0;
+    }
+
+    img {
+      width: 215px;
+    }
+  }
+}
