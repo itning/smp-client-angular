@@ -28,6 +28,12 @@ export class RoomService {
     return this.http.get<number[][]>(API.gps_range);
   }
 
+  updateGPSRange(gpsRange: string): Observable<number[][]> {
+    const param = new HttpParams()
+      .set('gps', gpsRange);
+    return this.http.post<number[][]>(API.gps_range, param);
+  }
+
   updateCheckDate(date: string): Observable<string> {
     const param = new HttpParams()
       .set('dateString', date);

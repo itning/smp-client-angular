@@ -101,6 +101,9 @@ export class RoomComponent implements OnInit {
 
     this.polyEditor.on('end', (event: Event) => {
       console.log('触发事件： end ' + event.target);
+      this.roomService.updateGPSRange(event.target.toString()).subscribe(() => {
+        this.message.success('修改成功');
+      });
     });
     console.log('初始化范围编辑插件成功');
   }
