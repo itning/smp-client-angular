@@ -1,1 +1,66 @@
-<p>leave-check works!</p>
+<div class="search-box">
+  <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <input type="text" nz-input placeholder="键入学号或姓名进行模糊搜索" [(ngModel)]="searchKey" (keyup.enter)="onSearch()"/>
+  </nz-input-group>
+  <ng-template #suffixIconButton>
+    <button nz-button nzType="primary" nzSearch (click)="onSearch()"><i nz-icon nzType="search"></i></button>
+  </ng-template>
+</div>
+<nz-table
+  nzShowSizeChanger
+  nzShowQuickJumper
+  nzTableLayout="fixed"
+  [nzData]="listOfData"
+  [nzFrontPagination]="false"
+  [nzLoading]="loading"
+  [nzTotal]="total"
+  [nzPageSize]="pageSize"
+  [nzPageIndex]="pageIndex"
+  [nzPageSizeOptions]="pageSizeOptions"
+  (nzQueryParams)="onQueryParamsChange($event)"
+>
+  <thead>
+  <tr>
+    <th nzWidth="60px"></th>
+    <th>姓名</th>
+    <th>学号</th>
+    <th>类型</th>
+    <th>开始日期</th>
+    <th>结束日期</th>
+    <th>公寓</th>
+    <th>寝室</th>
+    <th>电话</th>
+    <th>原因</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let data of listOfData">
+    <tr>
+      <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
+      <td>{{ data.studentUser.name }}</td>
+      <td>{{ data.studentUser.studentId }}</td>
+      <td>{{ data.leaveType | leaveType}}</td>
+      <td>{{ data.startTime | date:'yyyy年MM月dd日'}}</td>
+      <td>{{ data.endTime | date:'yyyy年MM月dd日'}}</td>
+      <td>{{ data.studentUser.apartment.name }}</td>
+      <td>{{ data.studentUser.roomNum }}</td>
+      <td>{{ data.studentUser.tel }}</td>
+      <td>{{ data.reason }}</td>
+      <td>
+        <a nz-popconfirm nzPopconfirmTitle="确定通过？"
+           (nzOnConfirm)="leaveCheck(data.id,true)">通过</a>
+        &nbsp;
+        <a nz-popconfirm nzPopconfirmTitle="确定拒绝？"
+           (nzOnConfirm)="leaveCheck(data.id,false)">拒绝</a>
+      </td>
+    </tr>
+    <tr [nzExpand]="expandSet.has(data.id)">
+      <app-comment
+        [leaveReasons]="data.leaveReasonList"
+        [id]="data.id"></app-comment>
+    </tr>
+  </ng-container>
+  </tbody>
+</nz-table>

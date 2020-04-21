@@ -16,10 +16,10 @@
   <nz-comment-content>
     <nz-form-item>
       <!--suppress HtmlFormInputWithoutLabel -->
-      <textarea nz-input rows="5"></textarea>
+      <textarea nz-input rows="5" [(ngModel)]="replyValue"></textarea>
     </nz-form-item>
     <nz-form-item>
-      <button nz-button nzType="primary">评论</button>
+      <button nz-button nzType="primary" (click)="onReply()">评论</button>
     </nz-form-item>
   </nz-comment-content>
 </nz-comment>

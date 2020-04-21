@@ -48,47 +48,50 @@ export class LeaveComponent implements OnInit {
       });
   }
 
+  noNeedSearch(): boolean {
+    return !this.isAllowCondition && (!this.search.key || this.search.key === '');
+  }
+
+  getSearchData(search: LeaveSearch, pagination: QueryPageSortParamBuilder = new QueryPageSortParamBuilder()) {
+    this.loading = true;
+    this.leaveService.searchLeaveByPage(search, pagination).subscribe(this.bind2View, () => {
+    }, () => {
+      this.loading = false;
+    });
+  }
+
   onQueryParamsChange(params: NzTableQueryParams) {
     const queryPageSortParamBuilder = new QueryPageSortParamBuilder()
       .page(params.pageIndex - 1)
       .size(params.pageSize)
       .sort(params.sort);
-    if (!this.isAllowCondition && (!this.search.key || this.search.key === '')) {
+    if (this.noNeedSearch()) {
       this.getData(queryPageSortParamBuilder);
     } else {
-      this.loading = true;
-      this.leaveService.searchLeaveByPage(this.search, queryPageSortParamBuilder).subscribe(this.bind2View, () => {
-      }, () => {
-        this.loading = false;
-      });
+      this.getSearchData(this.search, queryPageSortParamBuilder);
     }
   }
 
   onSearch() {
-    if (!this.isAllowCondition && (!this.search.key || this.search.key === '')) {
-      this.getData();
+    if (this.pageIndex !== 1) {
+      this.pageIndex = 1;
       return;
     }
-    if (this.isAllowCondition) {
-      if (this.dateRange.length === 2) {
-        this.search.time.startTime = this.datePipe.transform(this.dateRange[0], 'yyyy-MM-dd');
-        this.search.time.endTime = this.datePipe.transform(this.dateRange[1], 'yyyy-MM-dd');
-      } else {
-        this.search.time.startTime = '';
-        this.search.time.endTime = '';
-      }
-      this.loading = true;
-      this.leaveService.searchLeaveByPage(this.search, new QueryPageSortParamBuilder()).subscribe(this.bind2View, () => {
-      }, () => {
-        this.loading = false;
-      });
+    if (this.noNeedSearch()) {
+      this.getData();
     } else {
-      this.search = {effective: '', leaveType: '', time: {endTime: '', startTime: ''}, key: this.search.key};
-      this.loading = true;
-      this.leaveService.searchLeaveByPage(this.search, new QueryPageSortParamBuilder()).subscribe(this.bind2View, () => {
-      }, () => {
-        this.loading = false;
-      });
+      if (this.isAllowCondition) {
+        if (this.dateRange.length === 2) {
+          this.search.time.startTime = this.datePipe.transform(this.dateRange[0], 'yyyy-MM-dd');
+          this.search.time.endTime = this.datePipe.transform(this.dateRange[1], 'yyyy-MM-dd');
+        } else {
+          this.search.time.startTime = '';
+          this.search.time.endTime = '';
+        }
+      } else {
+        this.search = {effective: '', leaveType: '', time: {endTime: '', startTime: ''}, key: this.search.key};
+      }
+      this.getSearchData(this.search);
     }
   }
 

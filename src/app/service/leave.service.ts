@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Leave} from '../entity/Leave';
 import {Page} from '../entity/page/Page';
 import {API} from '../api';
 import {QueryPageSortParamBuilder} from '../http/QueryPageSortParamBuilder';
 import {LeaveType} from '../entity/LeaveType';
+import {LeaveReason} from '../entity/LeaveReason';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,28 @@ export class LeaveService {
     }
     console.log(query);
     return this.http.get<Page<Leave>>(API.search.leaves + query);
+  }
+
+  getLeaveCheckByPage(pagination: QueryPageSortParamBuilder): Observable<Page<Leave>> {
+    return this.http.get<Page<Leave>>(API.leaves_check + pagination.build());
+  }
+
+  searchLeaveCheckByPage(key: string, pagination: QueryPageSortParamBuilder): Observable<Page<Leave>> {
+    return this.http.get<Page<Leave>>(`${API.search.leaves_check}${pagination.build()}&key=${key}`);
+  }
+
+  checkLeaveStatus(id: string, status: boolean): Observable<void> {
+    const param = new HttpParams()
+      .set('leaveId', id)
+      .set('status', status.toString());
+    return this.http.post<void>(API.leave_status, param);
+  }
+
+  newComment(leaveId: string, value: string): Observable<LeaveReason> {
+    const param = new HttpParams()
+      .set('leaveId', leaveId)
+      .set('comment', value);
+    return this.http.post<LeaveReason>(API.leave_add_comment, param);
   }
 }
 

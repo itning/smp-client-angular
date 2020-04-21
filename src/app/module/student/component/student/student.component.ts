@@ -62,6 +62,10 @@ export class StudentComponent implements OnInit {
   }
 
   onSearch() {
+    if (this.pageIndex !== 1) {
+      this.pageIndex = 1;
+      return;
+    }
     if (this.needSearch()) {
       this.getSearchData(this.searchKey.trim());
     } else {
