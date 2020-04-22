@@ -46,7 +46,7 @@ export class SecurityService {
 
   isCounselorLogin(): boolean {
     const userInfo = this.getUserInfo();
-    return !(userInfo && userInfo.role.id !== this.COUNSELOR_ROLE_ID);
+    return userInfo && (userInfo.role.id === this.COUNSELOR_ROLE_ID);
   }
 
   afterLogin() {
@@ -78,8 +78,12 @@ export class SecurityService {
       return this.loginUser;
     } else {
       try {
+        const token = this.tokenService.getJwtTokenString();
+        if (!token) {
+          return null;
+        }
         this.loginUser = JSON.parse(JSON.parse(
-          Base64.decode(this.tokenService.getJwtTokenString().split('.')[1])
+          Base64.decode(token.split('.')[1])
         ).loginUser);
         return this.loginUser;
       } catch (e) {
