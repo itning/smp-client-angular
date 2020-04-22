@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SecurityService} from '../../../../service/security.service';
 import videojs from 'video.js';
@@ -8,9 +8,10 @@ import videojs from 'video.js';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   validateForm: FormGroup;
   isLoading = false;
+  videoJs: videojs.Player;
 
   constructor(private fb: FormBuilder,
               private securityService: SecurityService) {
@@ -22,14 +23,20 @@ export class LoginComponent implements OnInit {
       password: [null, [Validators.required]]
     });
 
+    const that = this;
     videojs('video-id', {
       controls: false,
       autoplay: true,
       preload: 'auto'
     }).ready(function() {
+      that.videoJs = this;
       // noinspection JSIgnoredPromiseFromCall
       this.play();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.videoJs.dispose();
   }
 
   submitForm(): void {

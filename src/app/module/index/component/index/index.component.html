@@ -37,9 +37,32 @@
   <nz-layout>
     <nz-header>
       <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="onCollapsedChange()"></i>
+      <a class="user-panel" nz-dropdown [nzDropdownMenu]="menu">
+        {{loginName}}
+        <i nz-icon nzType="down"></i>
+      </a>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item (click)="isChangePasswordModalVisible=true">修改密码</li>
+          <li nz-menu-item (click)="logout()">注销登录</li>
+        </ul>
+      </nz-dropdown-menu>
     </nz-header>
     <nz-content>
       <router-outlet></router-outlet>
     </nz-content>
   </nz-layout>
 </nz-layout>
+<nz-modal nzTitle="修改密码"
+          [(nzVisible)]="isChangePasswordModalVisible"
+          (nzOnCancel)="isChangePasswordModalVisible=false"
+          [nzOkLoading]="isChangePasswordModalLoading"
+          (nzOnOk)="changePwd()">
+  <nz-input-group [nzSuffix]="suffixTemplate">
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <input [type]="passwordVisible ? 'text' : 'password'" nz-input placeholder="输入新密码" [(ngModel)]="newPassword" />
+  </nz-input-group>
+  <ng-template #suffixTemplate>
+    <i class="password-visible" nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+  </ng-template>
+</nz-modal>

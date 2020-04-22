@@ -5,16 +5,22 @@ import {tap} from 'rxjs/operators';
 import {TokenService} from './token.service';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
+import {Base64} from 'js-base64';
+import {LoginUser} from '../entity/LoginUser';
+import {NzMessageService} from 'ng-zorro-antd';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SecurityService {
   private readonly LAST_URL_BEFORE_TO_LOGIN_KEY = 'last_url_before_to_login_key';
+  private readonly COUNSELOR_ROLE_ID = '3';
+  private loginUser: LoginUser = null;
 
   constructor(private http: HttpClient,
               private tokenService: TokenService,
-              private router: Router) {
+              private router: Router,
+              private message: NzMessageService) {
   }
 
   login(username: string, password: string): Observable<string> {
@@ -27,7 +33,29 @@ export class SecurityService {
       );
   }
 
+  changePassword(newPassword: string): Observable<void> {
+    const param = new HttpParams()
+      .set('newPassword', newPassword);
+    return this.http.post<void>(API.change_password, param);
+  }
+
+  logout() {
+    this.tokenService.clearJwtTokenString();
+    this.router.navigate(['/login']).catch((error) => console.error(error));
+  }
+
+  isCounselorLogin(): boolean {
+    const userInfo = this.getUserInfo();
+    return !(userInfo && userInfo.role.id !== this.COUNSELOR_ROLE_ID);
+  }
+
   afterLogin() {
+    this.loginUser = null;
+    if (!this.isCounselorLogin()) {
+      this.message.error('请使用辅导员账户进行登录');
+      console.warn(`login failed and user info: ${JSON.stringify(this.getUserInfo())}`);
+      return;
+    }
     const routeTo = window.localStorage.getItem(this.LAST_URL_BEFORE_TO_LOGIN_KEY);
     if (routeTo) {
       this.router.navigate([routeTo]).catch((error) => {
@@ -42,7 +70,22 @@ export class SecurityService {
 
   route2Login(): void {
     window.localStorage.setItem(this.LAST_URL_BEFORE_TO_LOGIN_KEY, this.router.url);
-    this.tokenService.clearJwtTokenString();
-    this.router.navigate(['/login']).catch((error) => console.error(error));
+    this.logout();
+  }
+
+  getUserInfo(): LoginUser | null {
+    if (this.loginUser) {
+      return this.loginUser;
+    } else {
+      try {
+        this.loginUser = JSON.parse(JSON.parse(
+          Base64.decode(this.tokenService.getJwtTokenString().split('.')[1])
+        ).loginUser);
+        return this.loginUser;
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    }
   }
 }

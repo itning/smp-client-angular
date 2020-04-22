@@ -5,6 +5,7 @@ import {
   NzButtonModule,
   NzCommentModule,
   NzDatePickerModule,
+  NzDropDownModule,
   NzEmptyModule,
   NzFormModule,
   NzIconModule,
@@ -70,7 +71,8 @@ import {RoomCheckPicSrcPipe} from '../../pipe/room-check-pic-src.pipe';
     NzPopoverModule,
     NzToolTipModule,
     NzTimePickerModule,
-    NzEmptyModule
+    NzEmptyModule,
+    NzDropDownModule
   ],
   exports: [
     RoomPicWaterFallComponent,
@@ -105,7 +107,8 @@ import {RoomCheckPicSrcPipe} from '../../pipe/room-check-pic-src.pipe';
     NzPopoverModule,
     NzToolTipModule,
     NzTimePickerModule,
-    NzEmptyModule
+    NzEmptyModule,
+    NzDropDownModule
   ]
 })
 export class SharedModule {

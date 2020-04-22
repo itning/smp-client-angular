@@ -9,12 +9,14 @@ import {LeaveCheckComponent} from '../leave-check/component/leave-check/leave-ch
 import {RoomComponent} from '../room/component/room/room.component';
 import {StatisticsComponent} from '../statistics/component/statistics/statistics.component';
 import {RoomPicWaterFallComponent} from '../../component/room-pic-water-fall/room-pic-water-fall.component';
+import {AuthGuard} from '../../auth/auth.guard';
 
 
 const routes: Routes = [
   {
     path: '',
     component: IndexComponent,
+    canActivateChild: [AuthGuard],
     children: [
       {path: '', redirectTo: 'student', pathMatch: 'full'},
       {path: 'student', component: StudentComponent},
