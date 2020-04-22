@@ -9,13 +9,14 @@
       <nz-countdown [nzValue]="checkTimeMilliseconds" nzTitle="距离打卡时间还有"></nz-countdown>
     </div>
     <div nz-col nzSpan="8">
-      <nz-statistic nz-popover
-                    nzPopoverTitle="数值统计"
-                    [nzPopoverContent]="popoverContent"
-                    [nzValue]="studentRoomChecks.length"
-                    nzTitle="打卡人数"
-                    [nzSuffix]="'/'+totalStudentNum"
-      ></nz-statistic>
+      <div nz-popover
+           nzPopoverTitle="数值统计"
+           [nzPopoverContent]="popoverContent">
+        <nz-statistic [nzValue]="studentRoomChecks.length"
+                      nzTitle="打卡人数"
+                      [nzSuffix]="'/'+totalStudentNum"
+        ></nz-statistic>
+      </div>
     </div>
   </div>
   <ng-template #popoverContent>
