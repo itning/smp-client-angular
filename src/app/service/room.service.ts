@@ -3,12 +3,15 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {API} from '../api';
 import {Observable} from 'rxjs';
 import {StudentRoomCheck} from '../entity/StudentRoomCheck';
+import {DatePipe} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
+  private datePipe = new DatePipe('zh-Hans');
   private array: StudentRoomCheck[];
+  private whereDay: string;
 
   constructor(private http: HttpClient) {
   }
@@ -59,5 +62,18 @@ export class RoomService {
 
   getStudentRoomCheckArray(): StudentRoomCheck[] {
     return this.array;
+  }
+
+  setWhereDay(whereDay: string): void {
+    this.whereDay = whereDay;
+  }
+
+  getWhereDay(): string {
+    if (this.whereDay) {
+      return this.whereDay;
+    } else {
+      this.whereDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      return this.whereDay;
+    }
   }
 }

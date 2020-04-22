@@ -25,11 +25,11 @@ export class RoomComponent implements OnInit {
   map: any;
   polygon: any;
   AMap: any;
-  nowDate = new Date();
+  nowDate: Date;
   nowMarkers: AMap.Marker[] = [];
   isChangeCheckTimeModalVisible = false;
   checkTimeUpdate: Date | null = null;
-  whereDay: string;
+  nowOpenInfoWindow: AMap.InfoWindow[] = [];
 
   constructor(private roomService: RoomService,
               private message: NzMessageService,
@@ -37,7 +37,7 @@ export class RoomComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.whereDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.nowDate = new Date(this.roomService.getWhereDay());
     this.getCheckDateData();
     this.getCountShouldRoomCheckData();
     this.initMap();
@@ -52,8 +52,8 @@ export class RoomComponent implements OnInit {
     });
   }
 
-  getCountShouldRoomCheckData(date: string = this.datePipe.transform(new Date(), 'yyyy-MM-dd')) {
-    this.roomService.getCountShouldRoomCheckData(date).subscribe((data) => {
+  getCountShouldRoomCheckData() {
+    this.roomService.getCountShouldRoomCheckData(this.roomService.getWhereDay()).subscribe((data) => {
       console.log('获取学生打卡统计数据成功');
       this.countStudent = data.t1;
       this.countInEffectLeaves = data.t2;
@@ -61,8 +61,8 @@ export class RoomComponent implements OnInit {
     });
   }
 
-  getCheckAllData(date: string = this.datePipe.transform(new Date(), 'yyyy-MM-dd')) {
-    this.roomService.getCheckAllData(date).subscribe((studentRoomChecks) => {
+  getCheckAllData() {
+    this.roomService.getCheckAllData(this.roomService.getWhereDay()).subscribe((studentRoomChecks) => {
       console.log('获取学生寝室打卡数据成功');
       this.studentRoomChecks = studentRoomChecks;
       this.initMarker();
@@ -132,9 +132,10 @@ export class RoomComponent implements OnInit {
 
   handleDateChange(date: Date) {
     if (date) {
-      this.whereDay = this.datePipe.transform(date, 'yyyy-MM-dd');
-      this.getCheckAllData(this.whereDay);
-      this.getCountShouldRoomCheckData(this.whereDay);
+      this.roomService.setWhereDay(this.datePipe.transform(date, 'yyyy-MM-dd'));
+      this.nowOpenInfoWindow.forEach((item) => item.close());
+      this.getCheckAllData();
+      this.getCountShouldRoomCheckData();
     }
   }
 
@@ -170,6 +171,7 @@ export class RoomComponent implements OnInit {
         offset: new AMap.Pixel(1, -30)
       });
       infoWindow.open(this.map, position, 100);
+      this.nowOpenInfoWindow.push(infoWindow);
     });
   }
 
@@ -184,7 +186,7 @@ export class RoomComponent implements OnInit {
   }
 
   exportCheckData() {
-    this.roomService.exportCheckData(this.whereDay);
+    this.roomService.exportCheckData(this.roomService.getWhereDay());
   }
 
   viewPic() {
