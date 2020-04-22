@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SecurityService} from '../../../../service/security.service';
 import videojs from 'video.js';
@@ -9,6 +9,8 @@ import videojs from 'video.js';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  @ViewChild('videoElement', {static: true})
+  videoElement: ElementRef;
   validateForm: FormGroup;
   isLoading = false;
   videoJs: videojs.Player;
@@ -24,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
 
     const that = this;
-    videojs('video-id', {
+    videojs(this.videoElement.nativeElement, {
       controls: false,
       autoplay: true,
       preload: 'auto'
