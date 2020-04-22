@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@amap/amap-jsapi-types": "0.0.4",
-    "@angular-devkit/build-angular": "~0.901.1",
-    "@angular/cli": "~9.1.1",
+    "@angular-devkit/build-angular": "~0.901.2",
+    "@angular/cli": "~9.1.2",
     "@angular/compiler-cli": "~9.1.1",
     "@angular/language-service": "~9.1.1",
     "@types/echarts": "^4.4.6",
