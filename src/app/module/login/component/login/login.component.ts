@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SecurityService} from '../../../../service/security.service';
-import {Router} from '@angular/router';
 import videojs from 'video.js';
 
 @Component({
@@ -14,7 +13,6 @@ export class LoginComponent implements OnInit {
   isLoading = false;
 
   constructor(private fb: FormBuilder,
-              private router: Router,
               private securityService: SecurityService) {
   }
 
@@ -29,6 +27,7 @@ export class LoginComponent implements OnInit {
       autoplay: true,
       preload: 'auto'
     }).ready(function() {
+      // noinspection JSIgnoredPromiseFromCall
       this.play();
     });
   }
