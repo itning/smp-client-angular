@@ -89,7 +89,6 @@ export class LeaveCheckComponent implements OnInit {
   }
 
   leaveCheck(id: string, status: boolean) {
-    console.log(`id ${id} status: ${status}`);
     this.leaveService.checkLeaveStatus(id, status).subscribe(() => {
       this.message.success('审批成功');
       this.getData();

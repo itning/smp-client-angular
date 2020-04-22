@@ -33,7 +33,6 @@ export class StudentInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.apartmentService.getAllApartment().subscribe((apartments) => {
-      console.log(apartments);
       this.apartmentData = apartments;
       this.apartmentDataWithKeyValue = this.apartmentData.map(item => ({key: item.id, value: item.name}));
     });

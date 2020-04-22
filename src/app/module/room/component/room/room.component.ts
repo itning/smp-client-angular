@@ -54,7 +54,6 @@ export class RoomComponent implements OnInit {
 
   getCountShouldRoomCheckData() {
     this.roomService.getCountShouldRoomCheckData(this.roomService.getWhereDay()).subscribe((data) => {
-      console.log('获取学生打卡统计数据成功');
       this.countStudent = data.t1;
       this.countInEffectLeaves = data.t2;
       this.totalStudentNum = this.countStudent - this.countInEffectLeaves;
@@ -63,7 +62,6 @@ export class RoomComponent implements OnInit {
 
   getCheckAllData() {
     this.roomService.getCheckAllData(this.roomService.getWhereDay()).subscribe((studentRoomChecks) => {
-      console.log('获取学生寝室打卡数据成功');
       this.studentRoomChecks = studentRoomChecks;
       this.initMarker();
     });
@@ -71,7 +69,6 @@ export class RoomComponent implements OnInit {
 
   getGpsRangeData() {
     this.roomService.getGPSRange().subscribe((data) => {
-      console.log('获取打卡范围数据成功');
       const path: any = data;
       this.polygon = new this.AMap.Polygon({
         path,
@@ -84,7 +81,6 @@ export class RoomComponent implements OnInit {
       });
       this.map.add(this.polygon);
       this.map.setFitView();
-      console.log('初始化范围标记成功');
       this.initPolyEditor();
     });
   }
@@ -102,12 +98,10 @@ export class RoomComponent implements OnInit {
     this.polyEditor = new this.AMap.PolyEditor(this.map, this.polygon);
 
     this.polyEditor.on('end', (event: Event) => {
-      console.log('触发事件： end ' + event.target);
       this.roomService.updateGPSRange(event.target.toString()).subscribe(() => {
         this.message.success('修改成功');
       });
     });
-    console.log('初始化范围编辑插件成功');
   }
 
   initMap() {
@@ -116,7 +110,6 @@ export class RoomComponent implements OnInit {
       version: '2.0',
       plugins: ['AMap.PolyEditor']
     }).then((AMap) => {
-      console.log('初始化地图成功');
       this.AMap = AMap;
       this.map = new AMap.Map('map-container', {
         resizeEnable: true, // 是否监控地图容器尺寸变化
@@ -140,7 +133,6 @@ export class RoomComponent implements OnInit {
   }
 
   initMarker() {
-    console.log('开始初始化点标记');
     this.nowMarkers.forEach((item) => item.clearEvents('click'));
     this.map.remove(this.nowMarkers);
     this.studentRoomChecks.forEach((item) => {
@@ -154,7 +146,6 @@ export class RoomComponent implements OnInit {
       this.setOnMouseClickMarker(marker);
       this.nowMarkers.push(marker);
     });
-    console.log('初始化点标记成功');
   }
 
   setOnMouseClickMarker(marker: AMap.Marker) {

@@ -64,7 +64,6 @@ export class ApartmentComponent implements OnInit {
   }
 
   deleteApartment(id: string) {
-    console.log(`del ${id}`);
     this.apartmentService.delApartment(id).subscribe(() => {
       this.message.success('删除成功');
       this.listOfData = this.listOfData.filter((item) => item.id !== id);

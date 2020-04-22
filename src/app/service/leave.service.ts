@@ -33,7 +33,6 @@ export class LeaveService {
         query += `&startTime=${search.time.startTime}&endTime=${search.time.endTime}`;
       }
     }
-    console.log(query);
     return this.http.get<Page<Leave>>(API.search.leaves + query);
   }
 
