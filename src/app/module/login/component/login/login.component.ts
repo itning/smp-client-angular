@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
       this.isLoading = true;
       this.securityService.login(this.validateForm.value.username, this.validateForm.value.password)
         .subscribe(() => {
-          this.router.navigate(['/']).catch((error) => console.error(error));
+          this.securityService.afterLogin();
         }, () => {
         }, () => {
           this.isLoading = false;

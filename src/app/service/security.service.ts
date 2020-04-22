@@ -10,6 +10,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class SecurityService {
+  private readonly LAST_URL_BEFORE_TO_LOGIN_KEY = 'last_url_before_to_login_key';
 
   constructor(private http: HttpClient,
               private tokenService: TokenService,
@@ -26,7 +27,21 @@ export class SecurityService {
       );
   }
 
+  afterLogin() {
+    const routeTo = window.localStorage.getItem(this.LAST_URL_BEFORE_TO_LOGIN_KEY);
+    if (routeTo) {
+      this.router.navigate([routeTo]).catch((error) => {
+        console.error(error);
+        window.localStorage.removeItem(this.LAST_URL_BEFORE_TO_LOGIN_KEY);
+        this.router.navigate(['/']).catch((e) => console.error(e));
+      });
+    } else {
+      this.router.navigate(['/']).catch((e) => console.error(e));
+    }
+  }
+
   route2Login(): void {
+    window.localStorage.setItem(this.LAST_URL_BEFORE_TO_LOGIN_KEY, this.router.url);
     this.tokenService.clearJwtTokenString();
     this.router.navigate(['/login']).catch((error) => console.error(error));
   }
