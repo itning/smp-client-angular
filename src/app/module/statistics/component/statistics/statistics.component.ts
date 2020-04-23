@@ -60,8 +60,22 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       {name: '请假', type: 'line', smooth: true, data: []}
     ]
   };
+  apartmentOption: echarts.EChartOption = {
+    title: {text: '公寓人数', subtext: '', left: 'center'},
+    tooltip: {trigger: 'item', formatter: '{a} <br/>{b} : {c} ({d}%)'},
+    legend: {orient: 'vertical', left: 'left', data: []},
+    series: [{
+      name: '公寓信息',
+      type: 'pie',
+      radius: '55%',
+      center: ['50%', '60%'],
+      data: [],
+      emphasis: {itemStyle: {shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)'}}
+    }]
+  };
   counselorEcharts: echarts.ECharts;
   polylineEcharts: echarts.ECharts;
+  apartmentEcharts: echarts.ECharts;
 
   constructor(private statisticsService: StatisticsService) {
     this.dateRange.push(this.lastMonthFromNow.toDate(), this.nowDay.toDate());
@@ -70,7 +84,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.counselorEcharts = echarts.init(this.counselorElementRef.nativeElement);
     this.polylineEcharts = echarts.init(this.polylineElementRef.nativeElement);
-    this.echartsInstances.push(this.counselorEcharts, this.polylineEcharts);
+    this.apartmentEcharts = echarts.init(this.apartmentElementRef.nativeElement);
 
     this.initLiveChart();
     this.getApartmentInfoChart();
@@ -78,8 +92,18 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.getPolylineData(this.lastMonthFromNow, this.nowDay);
 
     window.onresize = () => {
-      this.echartsInstances.forEach((item) => item.resize());
+      const eChartsResizeOption = this.getGoodWidth();
+      if (eChartsResizeOption) {
+        const width = (eChartsResizeOption.width as number) / 2;
+        this.apartmentEcharts.resize({width});
+        this.polylineEcharts.resize({width});
+
+        const width3 = (eChartsResizeOption.width as number) / 3;
+        this.echartsInstances.forEach((item) => item.resize({width: width3}));
+      }
+      this.counselorEcharts.resize(eChartsResizeOption);
     };
+    window.onresize.apply(this);
   }
 
   ngOnDestroy(): void {
@@ -117,8 +141,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.getClassComingChart(date, echartsAttendance, classComingOption);
 
     this.intervalNumber = setInterval(() => {
-      this.echartsInstances.forEach((item) => item.resize());
-
       this.getHomeComingChartLive(date, echartsRoom, comingOption);
       this.getLeaveChartLive(date, echartsLeave, leaveOption);
       this.getClassComingChart(date, echartsAttendance, classComingOption);
@@ -155,29 +177,14 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   getApartmentInfoChart() {
-    const option: echarts.EChartOption = {
-      title: {text: '公寓人数', subtext: '', left: 'center'},
-      tooltip: {trigger: 'item', formatter: '{a} <br/>{b} : {c} ({d}%)'},
-      legend: {orient: 'vertical', left: 'left', data: []},
-      series: [{
-        name: '公寓信息',
-        type: 'pie',
-        radius: '55%',
-        center: ['50%', '60%'],
-        data: [],
-        emphasis: {itemStyle: {shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)'}}
-      }]
-    };
-
-    const apartmentEcharts = echarts.init(this.apartmentElementRef.nativeElement);
     this.statisticsService.getApartmentChart().subscribe((apartmentStatistics) => {
       const sumPeople = apartmentStatistics
         .map((item) => item.people)
         .reduce((previousValue, currentValue) => previousValue + currentValue);
-      (option.title as echarts.EChartTitleOption).subtext = `总人数：${sumPeople ? sumPeople : 0}人`;
-      option.series[0].data = apartmentStatistics.map((item => ({name: item.name, value: item.people})));
-      option.legend.data = apartmentStatistics.map((item) => item.name);
-      apartmentEcharts.setOption(option, true);
+      (this.apartmentOption.title as echarts.EChartTitleOption).subtext = `总人数：${sumPeople ? sumPeople : 0}人`;
+      this.apartmentOption.series[0].data = apartmentStatistics.map((item => ({name: item.name, value: item.people})));
+      this.apartmentOption.legend.data = apartmentStatistics.map((item) => item.name);
+      this.apartmentEcharts.setOption(this.apartmentOption, true);
     });
   }
 
@@ -244,5 +251,13 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     const end = dayjs(dates[1]);
     this.getCounselorAllChart(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
     this.getPolylineData(start, end);
+  }
+
+  getGoodWidth(): echarts.EChartsResizeOption {
+    if (window.innerWidth < 200) {
+      return undefined;
+    } else {
+      return {width: window.innerWidth - 200};
+    }
   }
 }
