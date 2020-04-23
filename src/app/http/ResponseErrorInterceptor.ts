@@ -26,10 +26,14 @@ export class ResponseErrorInterceptor implements HttpInterceptor {
         console.error(
           `Backend returned code ${error.status}, ` +
           `body was: ${JSON.stringify(error.error)}`);
-        const errorMsg = (error.error as RestModel<string>).msg;
-        notification.error('错误', errorMsg);
-        if (error.status === 401) {
-          securityService.route2Login();
+        if (error.status === 0) {
+          notification.error('网络错误', '请检查网络连接后再试');
+        } else {
+          const errorMsg = (error.error as RestModel<string>).msg;
+          notification.error('错误', errorMsg);
+          if (error.status === 401) {
+            securityService.route2Login();
+          }
         }
       }
       return EMPTY;
