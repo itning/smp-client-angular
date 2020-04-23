@@ -1,9 +1,14 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import * as echarts from 'echarts';
 import {StatisticsService} from '../../../../service/statistics.service';
 import {DatePipe} from '@angular/common';
 import * as dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
+import {merge, Observable} from 'rxjs';
+import {Leave} from '../../../../entity/statistics/Leave';
+import {map} from 'rxjs/operators';
+import {ClassComing} from '../../../../entity/statistics/ClassComing';
+import {HomeComing} from '../../../../entity/statistics/HomeComing';
 
 dayjs.locale('zh-cn');
 
@@ -12,7 +17,7 @@ dayjs.locale('zh-cn');
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss']
 })
-export class StatisticsComponent implements OnInit {
+export class StatisticsComponent implements OnInit, OnDestroy {
   @ViewChild('echartsRoom', {static: true})
   echartsRoomElementRef: ElementRef;
   @ViewChild('echartsLeave', {static: true})
@@ -23,9 +28,12 @@ export class StatisticsComponent implements OnInit {
   apartmentElementRef: ElementRef;
   @ViewChild('counselor', {static: true})
   counselorElementRef: ElementRef;
+  @ViewChild('polyline', {static: true})
+  polylineElementRef: ElementRef;
 
   echartsInstances: echarts.ECharts[] = [];
   datePipe = new DatePipe('zh-Hans');
+  intervalNumber: number;
 
   constructor(private statisticsService: StatisticsService) {
   }
@@ -34,6 +42,13 @@ export class StatisticsComponent implements OnInit {
     this.initLiveChart();
     this.getApartmentInfoChart();
     this.getCounselorAllChart(dayjs().subtract(1, 'month').format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD'));
+    this.getPolylineData(dayjs().subtract(1, 'month'), dayjs());
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalNumber) {
+      window.clearInterval(this.intervalNumber);
+    }
   }
 
   initLiveChart() {
@@ -63,7 +78,7 @@ export class StatisticsComponent implements OnInit {
     this.getLeaveChartLive(date, echartsLeave, leaveOption);
     this.getClassComingChart(date, echartsAttendance, classComingOption);
 
-    setInterval(() => {
+    this.intervalNumber = setInterval(() => {
       this.echartsInstances.forEach((item) => item.resize());
 
       this.getHomeComingChartLive(date, echartsRoom, comingOption);
@@ -78,12 +93,8 @@ export class StatisticsComponent implements OnInit {
 
   setOption(key: string, sum: string, instance: echarts.ECharts, option: any) {
     return (data) => {
-      if (data[sum] === 0) {
-        option.series[0].name = '0/0';
-      } else {
-        option.series[0].name = `${data[key]}/${data[sum]}`;
-        option.series[0].data[0].value = Number(((data[key] / data[sum]) * 100).toFixed(2));
-      }
+      option.series[0].name = `${data[key]}/${data[sum]}`;
+      option.series[0].data[0].value = this.percentage(data[key], data[sum]);
       instance.setOption(option, true);
     };
   }
@@ -149,10 +160,70 @@ export class StatisticsComponent implements OnInit {
     const counselorEcharts = echarts.init(this.counselorElementRef.nativeElement);
     this.statisticsService.getAllCounselorChart(startDate, endDate).subscribe((allCounselors) => {
       (option.yAxis as echarts.EChartOption.YAxis).data = allCounselors.map((item) => item.user.name);
-      option.series[0].data = allCounselors.map((item) => Number(((item.homeComing.coming / item.leave.sum) * 100).toFixed(2)));
-      option.series[1].data = allCounselors.map((item) => Number(((item.classComing.coming / item.leave.sum) * 100).toFixed(2)));
-      option.series[2].data = allCounselors.map((item) => Number(((item.leave.leave / item.leave.sum) * 100).toFixed(2)));
+      option.series[0].data = allCounselors.map((item) => this.percentage(item.homeComing.coming, item.homeComing.sum));
+      option.series[1].data = allCounselors.map((item) => this.percentage(item.classComing.coming, item.classComing.sum));
+      option.series[2].data = allCounselors.map((item) => this.percentage(item.leave.leave, item.leave.sum));
       counselorEcharts.setOption(option, true);
     });
+  }
+
+  getPolylineData(startDate: dayjs.Dayjs, endDate: dayjs.Dayjs) {
+    const option: echarts.EChartOption | echarts.EChartsResponsiveOption = {
+      title: {text: '统计折线图'},
+      tooltip: {trigger: 'axis'},
+      dataZoom: [{type: 'slider', start: 0, end: 100}, {type: 'inside', start: 0, end: 100}],
+      legend: {data: ['寝室归寝', '课堂出勤', '请假']},
+      grid: {left: '3%', right: '4%', bottom: '3%', containLabel: true},
+      xAxis: {type: 'category', boundaryGap: false, data: []},
+      yAxis: {type: 'value'},
+      series: [
+        {name: '寝室归寝', type: 'line', smooth: true, data: []},
+        {name: '课堂出勤', type: 'line', smooth: true, data: []},
+        {name: '请假', type: 'line', smooth: true, data: []}
+      ]
+    };
+
+    (option.xAxis as echarts.EChartOption.XAxis).data = [];
+    option.series[0].data = [];
+    option.series[1].data = [];
+    option.series[2].data = [];
+    const polylineEcharts = echarts.init(this.polylineElementRef.nativeElement);
+
+    const allLeaveRequest: Observable<{ index: number, value: Leave }>[] = [];
+    const allClassComingRequest: Observable<{ index: number, value: ClassComing }>[] = [];
+    const allHomeComingRequest: Observable<{ index: number, value: HomeComing }>[] = [];
+
+    const day = endDate.diff(startDate, 'day') + 1;
+    for (let i = 0; i < day; i++) {
+      const eachDay = dayjs(startDate).add(i, 'day').format('YYYY-MM-DD');
+      (option.xAxis as echarts.EChartOption.XAxis).data.push(eachDay);
+      allHomeComingRequest.push(this.statisticsService.getHomeComingChart(eachDay).pipe(map((home) => ({index: i, value: home}))));
+      allClassComingRequest.push(this.statisticsService.getClassComingChart(eachDay).pipe(map((clazz) => ({index: i, value: clazz}))));
+      allLeaveRequest.push(this.statisticsService.getLeaveChart(eachDay).pipe(map((leave) => ({index: i, value: leave}))));
+    }
+
+    merge(...allHomeComingRequest).subscribe((data) => {
+      this.add2Array(option.series[0].data as number[], data.index, this.percentage(data.value.coming, data.value.sum));
+      polylineEcharts.setOption(option, true);
+    });
+    merge(...allClassComingRequest).subscribe((data) => {
+      this.add2Array(option.series[1].data as number[], data.index, this.percentage(data.value.coming, data.value.sum));
+      polylineEcharts.setOption(option, true);
+    });
+    merge(...allLeaveRequest).subscribe((data) => {
+      this.add2Array(option.series[2].data as number[], data.index, this.percentage(data.value.leave, data.value.sum));
+      polylineEcharts.setOption(option, true);
+    });
+  }
+
+  percentage(now: number, sum: number): number {
+    if (sum === 0) {
+      return 0;
+    }
+    return Number(((now / sum) * 100).toFixed(2));
+  }
+
+  add2Array<T>(data: Array<T>, index: number, value: T): void {
+    data.splice(index, 0, value);
   }
 }
