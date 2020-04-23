@@ -9,6 +9,10 @@
     <div #echartsAttendance class="realtime-echarts"></div>
   </div>
 </div>
+<div>
+  <span>数据日期范围：</span>
+  <nz-range-picker [(ngModel)]="dateRange" (ngModelChange)="onDateChange($event)"></nz-range-picker>
+</div>
 <div nz-row>
   <div nz-col nzSpan="12">
     <div #polyline style="width: 500px;height: 400px"></div>
