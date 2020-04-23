@@ -15,6 +15,9 @@ export class StatisticsComponent implements OnInit {
   echartsLeaveElementRef: ElementRef;
   @ViewChild('echartsAttendance', {static: true})
   echartsAttendanceElementRef: ElementRef;
+  @ViewChild('apartment', {static: true})
+  apartmentElementRef: ElementRef;
+
   echartsInstances: echarts.ECharts[] = [];
   datePipe = new DatePipe('zh-Hans');
 
@@ -22,6 +25,11 @@ export class StatisticsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initLiveChart();
+    this.getApartmentInfoChart();
+  }
+
+  initLiveChart() {
     const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
 
     const comingOption = {
@@ -61,7 +69,7 @@ export class StatisticsComponent implements OnInit {
     };
   }
 
-  refresh(key: string, sum: string, instance: echarts.ECharts, option: any) {
+  setOption(key: string, sum: string, instance: echarts.ECharts, option: any) {
     return (data) => {
       if (data[sum] === 0) {
         option.series[0].name = '0/0';
@@ -78,20 +86,66 @@ export class StatisticsComponent implements OnInit {
                          instance: echarts.ECharts,
                          option: echarts.EChartOption | echarts.EChartsResponsiveOption) {
     instance.setOption(option, true);
-    this.statisticsService.getHomeComingChart(date).subscribe(this.refresh('coming', 'sum', instance, option));
+    this.statisticsService.getHomeComingChart(date).subscribe(this.setOption('coming', 'sum', instance, option));
   }
 
   getLeaveChartLive(date: string,
                     instance: echarts.ECharts,
                     option: echarts.EChartOption | echarts.EChartsResponsiveOption) {
     instance.setOption(option, true);
-    this.statisticsService.getLeaveChart(date).subscribe(this.refresh('leave', 'sum', instance, option));
+    this.statisticsService.getLeaveChart(date).subscribe(this.setOption('leave', 'sum', instance, option));
   }
 
   getClassComingChart(date: string,
                       instance: echarts.ECharts,
                       option: echarts.EChartOption | echarts.EChartsResponsiveOption) {
     instance.setOption(option, true);
-    this.statisticsService.getClassComingChart(date).subscribe(this.refresh('coming', 'sum', instance, option));
+    this.statisticsService.getClassComingChart(date).subscribe(this.setOption('coming', 'sum', instance, option));
+  }
+
+  getApartmentInfoChart() {
+    const option: echarts.EChartOption | echarts.EChartsResponsiveOption = {
+      title: {
+        text: '公寓人数',
+        subtext: '',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: []
+      },
+      series: [
+        {
+          name: '公寓信息',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '60%'],
+          data: [],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    };
+
+    const apartmentEcharts = echarts.init(this.apartmentElementRef.nativeElement);
+    this.statisticsService.getApartmentChart().subscribe((apartmentStatistics) => {
+      const sumPeople = apartmentStatistics
+        .map((item) => item.people)
+        .reduce((previousValue, currentValue) => previousValue + currentValue);
+      (option.title as echarts.EChartTitleOption).subtext = `总人数：${sumPeople ? sumPeople : 0}人`;
+      option.series[0].data = apartmentStatistics.map((item => ({name: item.name, value: item.people})));
+      option.legend.data = apartmentStatistics.map((item) => item.name);
+      apartmentEcharts.setOption(option, true);
+    });
   }
 }
