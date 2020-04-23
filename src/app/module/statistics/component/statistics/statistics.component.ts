@@ -177,6 +177,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   getApartmentInfoChart() {
+    this.apartmentEcharts.setOption(this.apartmentOption, true);
     this.statisticsService.getApartmentChart().subscribe((apartmentStatistics) => {
       const sumPeople = apartmentStatistics
         .map((item) => item.people)
@@ -189,6 +190,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   getCounselorAllChart(startDate: string, endDate: string) {
+    this.counselorEcharts.setOption(this.counselorAllChartOption, true);
     this.statisticsService.getAllCounselorChart(startDate, endDate).subscribe((allCounselors) => {
       (this.counselorAllChartOption.yAxis as echarts.EChartOption.YAxis).data =
         allCounselors.map((item) => item.user.name);
@@ -203,6 +205,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   getPolylineData(startDate: dayjs.Dayjs, endDate: dayjs.Dayjs) {
+    this.polylineEcharts.setOption(this.polylineOption, true);
     (this.polylineOption.xAxis as echarts.EChartOption.XAxis).data = [];
     this.polylineOption.series[0].data = [];
     this.polylineOption.series[1].data = [];
