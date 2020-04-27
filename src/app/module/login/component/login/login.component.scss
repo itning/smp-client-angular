@@ -8,3 +8,11 @@
 .ant-form {
   min-width: 300px;
 }
+
+.video-info {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  object-fit: fill;
+  top: 0;
+}
