@@ -23,7 +23,7 @@
     "dayjs": "^1.8.26",
     "echarts": "^4.7.0",
     "js-base64": "^2.5.2",
-    "ng-zorro-antd": "^9.1.0",
+    "ng-zorro-antd": "^9.1.1",
     "rxjs": "~6.5.5",
     "tslib": "^1.11.1",
     "video.js": "^7.3.0",
