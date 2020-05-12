@@ -1,4 +1,4 @@
-# 基于Spring Cloud的学生管理平台（前端 Vue.JS）
+# 基于Spring Cloud的学生管理平台（前端 Angular）
 
 [![GitHub stars](https://img.shields.io/github/stars/itning/smp-client-angular.svg?style=social&label=Stars)](https://github.com/itning/smp-client-angular/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/itning/smp-client-angular.svg?style=social&label=Fork)](https://github.com/itning/smp-client-angular/network/members)
