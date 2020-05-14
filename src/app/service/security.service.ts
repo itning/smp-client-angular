@@ -69,7 +69,9 @@ export class SecurityService {
   }
 
   route2Login(): void {
-    window.localStorage.setItem(this.LAST_URL_BEFORE_TO_LOGIN_KEY, this.router.url);
+    if (this.router.url !== '/login') {
+      window.localStorage.setItem(this.LAST_URL_BEFORE_TO_LOGIN_KEY, this.router.url);
+    }
     this.logout();
   }
 
