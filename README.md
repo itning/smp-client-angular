@@ -10,7 +10,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/itning/smp-client-angular.svg)](https://github.com/itning/smp-client-angular/commits)
 [![GitHub release](https://img.shields.io/github/release/itning/smp-client-angular.svg)](https://github.com/itning/smp-client-angular/releases)
 [![GitHub repo size in bytes](https://img.shields.io/github/repo-size/itning/smp-client-angular.svg)](https://github.com/itning/smp-client-angular)
-[![HitCount](http://hits.dwyl.com/itning/smp-client-angular.svg)](http://hits.dwyl.com/itning/smp-client-angular)
+[![Hits](https://hitcount.itning.top?u=itning&r=smp-client-angular)](https://github.com/itning/hit-count)
 [![language](https://img.shields.io/badge/language-Angular-green.svg)](https://github.com/itning/smp-client-angular)
 
 ## 工程
